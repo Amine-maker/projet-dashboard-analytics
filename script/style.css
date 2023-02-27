@@ -1,0 +1,11 @@
+body {
+  font-family: sans-serif;
+}
+
+.flex {
+  display: flex;
+}
+
+div {
+  border: 1px solid red;
+}
