@@ -1,4 +1,22 @@
-const API_URL = "";
+// const API_URL = "";
+
+// const sendCustomMessage = (option) => {
+//   return {
+//     ...option,
+//   };
+// };
+
+const sendResizeEvent = (resizePayload) => {
+  return {
+    parameters: resizePayload,
+  };
+};
+
+const sendClickEvent = (clickPayload) => {
+  return {
+    parameters: clickPayload,
+  };
+};
 
 function generateSelector(context) {
   let index, pathSelector;
@@ -34,21 +52,31 @@ function getIndex(node) {
   return i;
 }
 
-// load document
+document.addEventListener("DOMContentLoaded", () => {
+  document.body.addEventListener("click", (e) => {
+    // selector output
+    let output = generateSelector(e.target);
 
-document.body.addEventListener("click", (e) => {
-  // selector output
-  let output = generateSelector(e.target);
+    // element that you select
+    let element = document.querySelector(output);
 
-  // element that you select
-  let element = document.querySelector(output);
-  console.log("Selected Element:", element);
+    const elementPayload = {
+      innerText: element.innerText.slice(0, 100),
+      cssSelector: output,
+    };
+    sendClickEvent({ elementPayload });
+    console.log(elementPayload);
+  });
 
-  console.log(output);
+  // resize
+  const resizeObserver = new ResizeObserver((entries) => {
+    for (const entry of entries) {
+      const cr = entry.contentRect;
+      const { width, height } = cr;
+      console.log(width, height);
+      sendResizeEvent({ width, height });
+    }
+  });
 
-  const payload = {
-    innerText: element.innerText.slice(0, 100),
-    cssSelector: output,
-  };
-  console.log(payload);
+  resizeObserver.observe(document.querySelector("html"));
 });
