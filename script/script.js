@@ -24,10 +24,17 @@ function generateSelector(context) {
   if (context === "null") throw new Error("not an dom reference");
   // call getIndex function
   index = getIndex(context);
-
   while (context.tagName) {
     // selector path
-    pathSelector = context.localName + (pathSelector ? ">" + pathSelector : "");
+    let classList = Array.from(context.classList)
+      .map((cls) => "." + cls)
+      .join("");
+    //dataset = getDataSet(context);
+    pathSelector =
+      context.localName +
+      (classList ? classList : "") +
+      //(dataset ? dataset : "") +
+      (pathSelector ? ">" + pathSelector : "");
     context = context.parentNode;
   }
   // selector path for nth of type
@@ -36,7 +43,7 @@ function generateSelector(context) {
 }
 
 // get index for nth of type element
-function getIndex(node) {
+const getIndex = (node) => {
   let i = 1;
   let tagName = node.tagName;
 
@@ -50,13 +57,20 @@ function getIndex(node) {
     }
   }
   return i;
-}
+};
+
+// const getDataSet = (node) => {
+//   if (!node.dataset) return;
+
+//   return node.dataset;
+// };
 
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", (e) => {
     // selector output
     let output = generateSelector(e.target);
 
+    console.log(output);
     // element that you select
     let element = document.querySelector(output);
 
