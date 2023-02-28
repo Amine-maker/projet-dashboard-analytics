@@ -1,10 +1,14 @@
-// const API_URL = "";
+const API_URL = "http://localhost:8080/api";
 
 // const sendCustomMessage = (option) => {
 //   return {
 //     ...option,
 //   };
 // };
+
+const appId = 1;
+const clientId = 2;
+const clientTimestamp = Date.now();
 
 const sendResizeEvent = (resizePayload) => {
   return {
@@ -16,6 +20,12 @@ const sendClickEvent = (clickPayload) => {
   return {
     parameters: clickPayload,
   };
+};
+
+const body = {
+  appId,
+  clientId,
+  clientTimestamp,
 };
 
 function generateSelector(context) {
@@ -59,12 +69,6 @@ const getIndex = (node) => {
   return i;
 };
 
-// const getDataSet = (node) => {
-//   if (!node.dataset) return;
-
-//   return node.dataset;
-// };
-
 document.addEventListener("DOMContentLoaded", () => {
   document.body.addEventListener("click", (e) => {
     // selector output
@@ -94,3 +98,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   resizeObserver.observe(document.querySelector("html"));
 });
+
+// gestion de pile a envoyer
+
+//setInterval(() => {
+(async () => {
+  const response = await fetch(`${API_URL}/sendMessage`, {
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    method: "POST",
+    body: JSON.stringify(body),
+  });
+
+  const content = await response.text();
+  console.log(content);
+})();
+//}, 2000);
