@@ -1,10 +1,10 @@
-package com.exemple.dashboard;
+package com.app.dashboardapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DashboardApplicationTests {
+class DashboardApiApplicationTests {
 
 	@Test
 	void contextLoads() {
