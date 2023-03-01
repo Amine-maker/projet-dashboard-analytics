@@ -15,6 +15,16 @@ public class DashboardDataMessage {
         private Long appId;
         private String windowSize;
         private Long clientTimestamp;
+        private Long serverTimestamp;
+
+        public Long getServerTimestamp() {
+                return this.serverTimestamp;
+        }
+
+        public void setServerTimestamp(Long serverTimestamp) {
+                this.serverTimestamp = serverTimestamp;
+        }
+
         private ArrayList<InnerIClick> clicks;
 
         public String getId() {
