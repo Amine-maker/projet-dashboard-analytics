@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,7 @@ import static com.app.dashboardapi.utils.apiUrl.*;
 @ResponseBody
 @RestController
 @CrossOrigin(origins = "*")
+@RequestMapping(value = "/")
 public class DashboardDataMessageController {
 
     @Autowired
@@ -22,7 +24,7 @@ public class DashboardDataMessageController {
 
     @PostMapping(path = SEND_MESSAGE)
     public ResponseEntity<String> sendDashboardDataMessage(@RequestBody DashboardDataMessage message) {
-        System.out.println(message);
+
         ddmService.sendMessage(message);
         return ResponseEntity.ok("good");
     }
