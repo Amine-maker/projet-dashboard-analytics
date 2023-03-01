@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.crypto.SecretKey;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import com.app.dashboardapi.model.User;
@@ -15,23 +16,27 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
+import org.springframework.beans.factory.annotation.Value;
 import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtil {
 
-    private String secret = "mySecret";
+    @Value("${jwt.secret}")
+    private String secret;
+
+    @Value("${jwt.expirationMs}")
+    private int jwtExpirationMs;
 
     public String generateToken(Authentication authentication) {
-        User userPrincipal = (User) authentication.getPrincipal();
-
+        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 3600000);
+        Date expiryDate = new Date(now.getTime() + 120000);
 
         SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
         return Jwts.builder()
-                .setSubject((userPrincipal.getId()))
+                .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(secretKey, SignatureAlgorithm.HS256)
@@ -54,8 +59,8 @@ public class JwtTokenUtil {
         return false;
     }
 
-    public Long getUserIdFromToken(String token) {
+    public String getUserUsernameFromToken(String token) {
         Claims claims = Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody();
-        return Long.parseLong(claims.getSubject());
+        return claims.getSubject();
     }
 }

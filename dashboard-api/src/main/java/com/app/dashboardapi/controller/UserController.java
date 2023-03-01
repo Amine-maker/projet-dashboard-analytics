@@ -2,15 +2,17 @@ package com.app.dashboardapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dashboardapi.model.User;
-import com.app.dashboardapi.repository.UserRepository;
+import com.app.dashboardapi.service.AuthService;
+import com.app.dashboardapi.utils.JwtResponse;
+import com.app.dashboardapi.utils.LoginRequest;
 import com.app.dashboardapi.utils.SignUpRequest;
 
 import static com.app.dashboardapi.utils.apiUrl.*;
@@ -21,24 +23,22 @@ import static com.app.dashboardapi.utils.apiUrl.*;
 public class UserController {
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private AuthService authService;
 
     @PostMapping(path = SIGNUP_URL)
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) {
-        System.out.println(userRepository.existsByUsername(signUpRequest.getUsername()));
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Username is already taken!");
-        }
-
-        User user = new User(signUpRequest.getUsername(), signUpRequest.getPassword());
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        User result = userRepository.save(user);
-
-        return ResponseEntity.ok(result);
+        return authService.registerUser(signUpRequest);
     }
+
+    @PostMapping(path = LOGIN_URL)
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        JwtResponse jwt = authService.login(loginRequest);
+        return ResponseEntity.ok(jwt);
+    }
+
+    @GetMapping(path = VALIDATE_TOKEN_URL)
+    public boolean validateToken(String token) {
+        return authService.validateToken(token);
+    }
+
 }
