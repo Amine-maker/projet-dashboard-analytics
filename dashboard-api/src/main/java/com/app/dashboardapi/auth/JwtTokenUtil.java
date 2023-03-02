@@ -1,14 +1,16 @@
 package com.app.dashboardapi.auth;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-
-import com.app.dashboardapi.model.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,13 +35,14 @@ public class JwtTokenUtil {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + 120000);
 
-        SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+        Key key = new SecretKeySpec(secretBytes, "HmacSHA256");
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
@@ -59,8 +62,12 @@ public class JwtTokenUtil {
         return false;
     }
 
-    public String getUserUsernameFromToken(String token) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody();
+    public String getUsernameFromToken(String token) {
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+        Claims claims = Jwts.parserBuilder()
+                .setSigningKey(secretBytes)
+                .build()
+                .parseClaimsJws(token.trim()).getBody();
         return claims.getSubject();
     }
 }

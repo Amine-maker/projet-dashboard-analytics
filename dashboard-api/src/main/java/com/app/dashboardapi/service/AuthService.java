@@ -1,7 +1,5 @@
 package com.app.dashboardapi.service;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,7 +38,9 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String token = jwtUtils.generateToken(authentication);
-        String usernameToken = jwtUtils.getUserUsernameFromToken(token);
+        System.out.println(token);
+        String usernameToken = jwtUtils.getUsernameFromToken(token);
+        // System.out.println("TESTESTES" + usernameToken);
         JwtResponse jwtToken = new JwtResponse(token, usernameToken, null);
         return jwtToken;
     }
