@@ -1,34 +1,68 @@
-import React, { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
+import * as React from "react";
+import {
+  Routes,
+  Route,
+  Link,
+  useNavigate,
+  useLocation,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import { fakeAuthProvider } from "./api/authProvider";
+import AuthForm from "./components/auth/AuthForm";
+import LayoutComponent from "./components/layout/LayoutComponent";
+import AuthProvider from "./context/AuthContext";
+import { useAuth } from "./hooks/AuthHook";
+import { ILoginPayload, IUser } from "./utils/interface";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function App() {
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" rel="noreferrer" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" rel="noreferrer" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+    <AuthProvider>
+      <h1>Auth Example</h1>
+
+      <p>
+        This example demonstrates a simple login flow with three pages: a public
+        page, a protected page, and a login page. In order to see the protected
+        page, you must first login. Pretty standard stuff.
       </p>
-    </div>
+
+      <Routes>
+        <Route element={<LayoutComponent />}>
+          <Route path="/" element={<PublicPage />} />
+          <Route path="/login" element={<AuthForm />} />
+          <Route
+            path="/admin"
+            element={
+              <RequireAuth>
+                <ProtectedPage />
+              </RequireAuth>
+            }
+          />
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 
-export default App;
+function RequireAuth({ children }: { children: JSX.Element }) {
+  const auth = useAuth();
+  const location = useLocation();
+
+  if (!auth.user) {
+    // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected. This allows us to send them
+    // along to that page after they login, which is a nicer user experience
+    // than dropping them off on the home page.
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
+
+function PublicPage() {
+  return <h3>Public</h3>;
+}
+
+function ProtectedPage() {
+  return <h3>Protected</h3>;
+}

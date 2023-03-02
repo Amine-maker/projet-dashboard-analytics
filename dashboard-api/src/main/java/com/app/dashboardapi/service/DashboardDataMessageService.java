@@ -14,11 +14,11 @@ public class DashboardDataMessageService {
     @Autowired
     private DashboardMessageRepository dashboardRepository;
 
-    // code métier
     public void sendMessage(DashboardDataMessage message) {
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         message.setServerTimestamp(timestamp.getTime());
+
 
         dashboardRepository.save(message);
     }

@@ -1,11 +1,9 @@
 package com.app.dashboardapi.auth;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.springframework.security.core.Authentication;
@@ -19,7 +17,6 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.UnsupportedJwtException;
 import org.springframework.beans.factory.annotation.Value;
-import io.jsonwebtoken.security.Keys;
 
 @Component
 public class JwtTokenUtil {
@@ -33,22 +30,21 @@ public class JwtTokenUtil {
     public String generateToken(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + 120000);
+        Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
 
-        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
-        Key key = new SecretKeySpec(secretBytes, "HmacSHA256");
+
 
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
-                .signWith(key, SignatureAlgorithm.HS256)
+                .signWith(setSecretToKey(secret), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean validateToken(String authToken) {
         try {
-            Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(authToken);
+            Jwts.parserBuilder().setSigningKey(setSecretToKey(secret)).build().parseClaimsJws(authToken);
             return true;
         } catch (MalformedJwtException ex) {
             System.out.println("Invalid JWT token");
@@ -63,11 +59,15 @@ public class JwtTokenUtil {
     }
 
     public String getUsernameFromToken(String token) {
-        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(secretBytes)
+                .setSigningKey(setSecretToKey(secret))
                 .build()
-                .parseClaimsJws(token.trim()).getBody();
+                .parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    private Key setSecretToKey(String secret){
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+        return new SecretKeySpec(secretBytes, "HmacSHA256");
     }
 }

@@ -1,9 +1,13 @@
 package com.app.dashboardapi.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
@@ -11,25 +15,41 @@ public class User {
 
     @Id
     private String id;
-    private String username;
-    private String password;
-    private Collection<String> roles;
 
-    public Collection<String> getRoles() {
+    @NotBlank
+    @Size(max = 20)
+    private String username;
+
+    @NotBlank
+    @Size(max = 50)
+    private String email;
+
+    @NotBlank
+    public String getEmail() {
+        return this.email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Size(max = 120)
+    private String password;
+
+    @DBRef
+    private Set<Role> roles = new HashSet<>();
+
+    public Set<Role> getRoles() {
         return this.roles;
     }
 
-    public User(String username, String password) {
+    public User(String username, String email, String password) {
         this.username = username;
+        this.email = email;
         this.password = password;
-
-        ArrayList<String> roles = new ArrayList<String>();
-        roles.add("USER");
-        this.roles = roles;
-
     }
 
-    public void setRoles(Collection<String> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
