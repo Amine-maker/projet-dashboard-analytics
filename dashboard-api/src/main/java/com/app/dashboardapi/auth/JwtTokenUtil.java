@@ -31,13 +31,15 @@ public class JwtTokenUtil {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
+        Claims claims = Jwts.claims().setSubject(userPrincipal.getUsername());
 
-
-
+        claims.put("username", userPrincipal.getUsername());
         return Jwts.builder()
                 .setSubject((userPrincipal.getUsername()))
+                .setClaims(claims)
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
+
                 .signWith(setSecretToKey(secret), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -66,7 +68,7 @@ public class JwtTokenUtil {
         return claims.getSubject();
     }
 
-    private Key setSecretToKey(String secret){
+    private Key setSecretToKey(String secret) {
         byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
         return new SecretKeySpec(secretBytes, "HmacSHA256");
     }

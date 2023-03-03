@@ -8,12 +8,11 @@ import {
   Navigate,
   Outlet,
 } from "react-router-dom";
-import { fakeAuthProvider } from "./api/authProvider";
 import AuthForm from "./components/auth/AuthForm";
 import LayoutComponent from "./components/layout/LayoutComponent";
 import AuthProvider from "./context/AuthContext";
+import { AuthService } from "./core/service/AuthService";
 import { useAuth } from "./hooks/AuthHook";
-import { ILoginPayload, IUser } from "./utils/interface";
 
 export default function App() {
   return (
@@ -28,8 +27,8 @@ export default function App() {
 
       <Routes>
         <Route element={<LayoutComponent />}>
-          <Route path="/" element={<PublicPage />} />
-          <Route path="/login" element={<AuthForm />} />
+          <Route path="/public" element={<PublicPage />} />
+          <Route path="/" element={<AuthForm />} />
           <Route
             path="/admin"
             element={
@@ -53,7 +52,7 @@ function RequireAuth({ children }: { children: JSX.Element }) {
     // trying to go to when they were redirected. This allows us to send them
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
-    return <Navigate to="/login" state={{ from: location }} replace />;
+    return <Navigate to="/" state={{ from: location }} replace />;
   }
 
   return children;
@@ -64,5 +63,7 @@ function PublicPage() {
 }
 
 function ProtectedPage() {
+  AuthService.getAdminData();
+
   return <h3>Protected</h3>;
 }

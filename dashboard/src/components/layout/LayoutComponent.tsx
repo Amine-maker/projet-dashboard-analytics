@@ -1,6 +1,6 @@
 import React from "react";
 import AuthStatus from "./AuthStatusComponent";
-import { useNavigate, Link, Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const LayoutComponent = () => {
   return (
@@ -9,7 +9,7 @@ const LayoutComponent = () => {
 
       <ul>
         <li>
-          <Link to="/">Public Page</Link>
+          <Link to="/public">Public Page</Link>
         </li>
         <li>
           <Link to="/admin">Protected Page</Link>

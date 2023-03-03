@@ -8,7 +8,7 @@ const AuthStatus = () => {
 
   const navigate = useNavigate();
 
-  if (!auth.user) {
+  if (!auth.isAuth || !auth.user) {
     return <p>You are not logged in.</p>;
   }
 

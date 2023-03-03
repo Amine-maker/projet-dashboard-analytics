@@ -2,7 +2,6 @@ package com.app.dashboardapi.utils;
 
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
