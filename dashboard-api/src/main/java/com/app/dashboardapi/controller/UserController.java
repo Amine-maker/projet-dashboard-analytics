@@ -1,48 +1,60 @@
 package com.app.dashboardapi.controller;
 
+import com.app.dashboardapi.auth.AuthTokenFilter;
+import com.app.dashboardapi.auth.JwtTokenUtil;
+import com.app.dashboardapi.service.CustomUserDetailsService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.app.dashboardapi.repository.UserRepository;
-import com.app.dashboardapi.service.CustomUserDetailsService;
+import java.util.Objects;
+
+import static com.app.dashboardapi.utils.apiUrl.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/test")
+@RequestMapping(USER_BASE)
 public class UserController {
 
-	@Autowired
-	private CustomUserDetailsService userService;
+    @Autowired
+    CustomUserDetailsService userDetailsService;
 
-	@GetMapping("/all")
-	public String allAccess() {
-		return "Public Content.";
-	}
+    @Autowired
+    AuthTokenFilter authTokenFilter;
 
-	@GetMapping("/user")
-	@PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-	public String userAccess() {
-		return "User Content.";
-	}
+    @Autowired
+    private JwtTokenUtil jwtUtils;
 
-	@GetMapping("/admin")
-	@PreAuthorize("hasRole('ADMIN')")
-	public String adminAccess() {
-		return "Admin Board.";
-	}
+    @GetMapping("/user")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public String userAccess() {
+        return "User Content.";
+    }
 
-	@GetMapping
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-	public ResponseEntity<?> getUserByUsername(@RequestParam String username) {
-		UserDetails user = userService.loadUserByUsername(username);
-		return ResponseEntity.ok(user);
+    @GetMapping("/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public String adminAccess() {
+        return "Admin Board.";
+    }
 
-	}
+    @GetMapping("/info/{username}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> getUserFromUsername(@PathVariable String username, HttpServletRequest request) {
+
+        String token = authTokenFilter.parseJwt(request);
+        String tokenUsername = jwtUtils.getUsernameFromToken(token);
+
+        if (Objects.equals(username, tokenUsername)) {
+            UserDetails user = userDetailsService.loadUserByUsername(username);
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+
+    }
+
 }

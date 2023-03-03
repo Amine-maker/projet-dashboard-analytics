@@ -4,7 +4,6 @@ import { useAuth } from "../../hooks/AuthHook";
 
 const AuthStatus = () => {
   const auth = useAuth();
-  console.log(auth);
 
   const navigate = useNavigate();
 
@@ -18,7 +17,7 @@ const AuthStatus = () => {
         Welcome {auth.user.username}!{" "}
         <button
           onClick={() => {
-            auth.signout(() => navigate("/"));
+            auth.signout(() => navigate("/login"));
           }}
         >
           Sign out

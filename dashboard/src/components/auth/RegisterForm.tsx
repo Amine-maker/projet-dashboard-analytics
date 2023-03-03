@@ -1,8 +1,9 @@
-import React, { type FC, useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { Role } from "../../core/utils/enum";
 import { useAuth } from "../../hooks/AuthHook";
 
-const AuthForm = (): any => {
+const RegisterForm = (): any => {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useAuth();
@@ -20,8 +21,9 @@ const AuthForm = (): any => {
     const formData = new FormData(event.currentTarget);
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
+    const email = formData.get("email") as string;
 
-    auth.signin({ username, password }, () => {
+    auth.register({ username, password, email, roles: [Role.USER] }, () => {
       navigate(from, { replace: true });
     });
   }
@@ -29,18 +31,21 @@ const AuthForm = (): any => {
   return (
     <div>
       <p>You must log in to view the page at {from}</p>
-      <h1 className="underline">uytuy</h1>
+
       <form onSubmit={handleSubmit}>
         <label>
           Username: <input name="username" type="text" />
         </label>{" "}
         <label>
+          Email: <input name="email" type="email" />
+        </label>{" "}
+        <label>
           Password: <input name="password" type="password" />
         </label>{" "}
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
       </form>
     </div>
   );
 };
 
-export default AuthForm;
+export default RegisterForm;

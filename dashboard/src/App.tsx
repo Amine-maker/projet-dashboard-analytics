@@ -9,9 +9,10 @@ import {
   Outlet,
 } from "react-router-dom";
 import AuthForm from "./components/auth/AuthForm";
+import RegisterForm from "./components/auth/RegisterForm";
 import LayoutComponent from "./components/layout/LayoutComponent";
 import AuthProvider from "./context/AuthContext";
-import { AuthService } from "./core/service/AuthService";
+import { RenderIf } from "./core/utils/utils";
 import { useAuth } from "./hooks/AuthHook";
 
 export default function App() {
@@ -27,8 +28,10 @@ export default function App() {
 
       <Routes>
         <Route element={<LayoutComponent />}>
-          <Route path="/public" element={<PublicPage />} />
-          <Route path="/" element={<AuthForm />} />
+          <Route path="/" element={<PublicPage />} />
+          <Route path="/login" element={<AuthForm />} />
+          <Route path="/register" element={<RegisterForm />} />
+
           <Route
             path="/admin"
             element={
@@ -44,15 +47,11 @@ export default function App() {
 }
 
 function RequireAuth({ children }: { children: JSX.Element }) {
-  const auth = useAuth();
   const location = useLocation();
+  const auth = useAuth();
 
-  if (!auth.user) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    return <Navigate to="/" state={{ from: location }} replace />;
+  if (!auth.isAuth) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
   return children;
@@ -63,7 +62,5 @@ function PublicPage() {
 }
 
 function ProtectedPage() {
-  AuthService.getAdminData();
-
   return <h3>Protected</h3>;
 }
