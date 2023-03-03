@@ -1,5 +1,8 @@
 package com.app.dashboardapi.utils;
 
+import lombok.*;
+
+@Data
 public class MessageResponse {
     public String message;
 
@@ -7,11 +10,4 @@ public class MessageResponse {
         this.message = message;
     }
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }

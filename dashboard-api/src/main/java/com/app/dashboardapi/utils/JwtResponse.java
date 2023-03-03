@@ -1,8 +1,11 @@
 package com.app.dashboardapi.utils;
 
+import lombok.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 public class JwtResponse {
     private String token;
     private String type = "Bearer";
@@ -35,31 +38,4 @@ public class JwtResponse {
         this.type = tokenType;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public List<String> getRoles() {
-        return roles;
-    }
 }
