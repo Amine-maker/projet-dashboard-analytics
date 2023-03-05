@@ -1,5 +1,4 @@
-import { ReactElement } from "react";
-import { Role } from "./enum";
+import { type Role } from "./enum";
 
 export interface ILoginPayload {
   username: string;
@@ -23,7 +22,7 @@ export interface ApiUserDataToken {
 }
 
 export interface ApiUser extends Omit<IUser, "roles"> {
-  authorities: { authority: string }[];
+  authorities: Array<{ authority: string }>;
 }
 
 export interface UiRenderIf<T> {

@@ -1,24 +1,19 @@
 import React, { useState } from "react";
 import AuthService from "../core/service/AuthService";
 import UserService from "../core/service/UserService";
-import {
-  ILoginPayload,
-  IRegisterPayload,
-  IUser,
-} from "../core/utils/interface";
-import { useAuth } from "../hooks/AuthHook";
+import { type ILoginPayload, type IRegisterPayload, type IUser } from "../core/utils/interface";
 
 export const AuthContext = React.createContext<AuthContextType>(null!);
 
-function AuthProvider({ children }: { children: React.ReactNode }) {
+function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [user, setUser] = useState<IUser | null>(null);
   const [isAuth, setIsAuthenticated] = useState<boolean>(false);
   const [token] = useState<string | null>(localStorage.getItem("token"));
 
   React.useEffect(() => {
-    if (token) {
-      UserService.getCurrentUser().then((user) => {
-        if (user) {
+    if (token != null) {
+      void UserService.getCurrentUser().then((user) => {
+        if (user != null) {
           setCurrentUser({
             email: user.email,
             roles: user.authorities.map((role) => role.authority),
@@ -30,7 +25,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [token]);
 
-  const signin = async (userPayload: ILoginPayload, callback: VoidFunction) => {
+  const signin = async (userPayload: ILoginPayload, callback: VoidFunction): Promise<void> => {
     const u = await AuthService.signin(userPayload, () => {
       console.log("test signin successful");
       callback();
@@ -40,10 +35,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     setCurrentUser(u as IUser);
   };
 
-  const register = async (
-    userPayload: IRegisterPayload,
-    callback: VoidFunction
-  ) => {
+  const register = async (userPayload: IRegisterPayload, callback: VoidFunction): Promise<void> => {
     const u = await AuthService.register(userPayload, () => {
       console.log("test register successful");
       callback();
@@ -54,8 +46,8 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsAuthenticated(true);
     setCurrentUser(u as IUser);
   };
-  const signout = (callback: VoidFunction) => {
-    return AuthService.signout(() => {
+  const signout = (callback: VoidFunction): void => {
+    AuthService.signout(() => {
       setIsAuthenticated(false);
       setUser(null);
       callback();

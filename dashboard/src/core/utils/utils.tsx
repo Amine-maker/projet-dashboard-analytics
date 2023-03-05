@@ -1,6 +1,7 @@
-import { ReactElement } from "react";
-import { UiRenderIf } from "./interface";
+import { type ReactElement } from "react";
+import { type UiRenderIf } from "./interface";
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export const RenderIf = ({ children, isTrue }: UiRenderIf<ReactElement>) => {
   return isTrue ? children : null;
 };

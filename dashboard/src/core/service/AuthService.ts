@@ -2,6 +2,7 @@ import { API_URL } from "../utils/constante";
 import { type ApiUserDataToken, type ILoginPayload, type IRegisterPayload, type IUser } from "../utils/interface";
 import axiosInstance from "./ApiService";
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class AuthService {
   public static isAuthenticated = false;
 
@@ -39,7 +40,9 @@ class AuthService {
             roles: registerUser.roles,
             username: registerUser.username,
           };
-          void this.signin({ username: payload.username, password: payload.password }, () => {});
+          void this.signin({ username: payload.username, password: payload.password }, () => {
+            console.log("good signin");
+          });
           return user;
         },
         (err: string) => {

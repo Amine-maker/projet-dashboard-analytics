@@ -1,31 +1,14 @@
 import * as React from "react";
-import {
-  Routes,
-  Route,
-  Link,
-  useNavigate,
-  useLocation,
-  Navigate,
-  Outlet,
-} from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import AuthForm from "./components/auth/AuthForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import LayoutComponent from "./components/layout/LayoutComponent";
 import AuthProvider from "./context/AuthContext";
-import { RenderIf } from "./core/utils/utils";
 import { useAuth } from "./hooks/AuthHook";
 
-export default function App() {
+export default function App(): JSX.Element {
   return (
     <AuthProvider>
-      <h1>Auth Example</h1>
-
-      <p>
-        This example demonstrates a simple login flow with three pages: a public
-        page, a protected page, and a login page. In order to see the protected
-        page, you must first login. Pretty standard stuff.
-      </p>
-
       <Routes>
         <Route element={<LayoutComponent />}>
           <Route path="/" element={<PublicPage />} />
@@ -33,7 +16,7 @@ export default function App() {
           <Route path="/register" element={<RegisterForm />} />
 
           <Route
-            path="/admin"
+            path="/dashboard"
             element={
               <RequireAuth>
                 <ProtectedPage />
@@ -46,7 +29,7 @@ export default function App() {
   );
 }
 
-function RequireAuth({ children }: { children: JSX.Element }) {
+function RequireAuth({ children }: { children: JSX.Element }): JSX.Element {
   const location = useLocation();
   const auth = useAuth();
 
@@ -57,10 +40,10 @@ function RequireAuth({ children }: { children: JSX.Element }) {
   return children;
 }
 
-function PublicPage() {
+function PublicPage(): JSX.Element {
   return <h3>Public</h3>;
 }
 
-function ProtectedPage() {
+export function ProtectedPage(): JSX.Element {
   return <h3>Protected</h3>;
 }

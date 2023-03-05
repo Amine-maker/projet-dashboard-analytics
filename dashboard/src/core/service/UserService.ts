@@ -1,14 +1,13 @@
 import { API_URL } from "../utils/constante";
 import axiosInstance from "./ApiService";
 import jwtDecode from "jwt-decode";
-import { type ApiUser, IUser } from "../utils/interface";
+import { type ApiUser } from "../utils/interface";
 
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class UserService {
-  constructor() {}
-
   public static async getCurrentUser(): Promise<ApiUser | null> {
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (token === null) {
       // Si le token n'est pas présent dans le localStorage, l'utilisateur n'est pas connecté
       return null;
     }
@@ -18,7 +17,7 @@ class UserService {
       const decodedToken: any = jwtDecode(token);
       console.log(decodedToken);
 
-      const username = decodedToken.sub;
+      const username: string = decodedToken.sub;
       console.log(username);
       // l'ID de l'utilisateur est stocké dans le claim "sub" du token
       // return userId;
