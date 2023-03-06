@@ -4,6 +4,10 @@
    "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
    },
+   "eslint.workingDirectories": [
+      "./dashboard",
+      "./dashboard-api"
+   ],
    "eslint.validate": [
       "javascript",
       "typescript",

@@ -20,9 +20,5 @@ docker-compose build
 docker-compose up
 ```
 
-```shell
-npm run dev
-```
-
 * Backend : http://localhost:5000/
 * Frontend : http://localhost:5173

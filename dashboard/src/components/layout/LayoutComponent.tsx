@@ -16,7 +16,7 @@ const LayoutComponent = (): JSX.Element => {
         <div className="container flex flex-wrap items-center justify-between mx-auto">
           <span className="flex items-center">
             <img src="https://res.cloudinary.com/dvbzs4nlk/image/upload/v1678042412/portfolio/logo-portfolio_rji67t.svg" className="h-6 mr-3 sm:h-9" alt="Flowbite Logo" />
-            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Dadash</span>
+            <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Dadasha</span>
           </span>
           <div className="flex items-center md:order-2">
             <RenderIf isTrue={isAuth}>

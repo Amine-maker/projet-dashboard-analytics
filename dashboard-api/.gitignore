@@ -37,5 +37,3 @@ env.properties
 /src/main/resources/
 
 
-## data ##
-init_data/
