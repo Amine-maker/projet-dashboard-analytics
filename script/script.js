@@ -101,6 +101,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // gestion de pile a envoyer
 
+
+
 //setInterval(() => {
 (async () => {
   const response = await fetch(`${API_URL}/sendMessage`, {

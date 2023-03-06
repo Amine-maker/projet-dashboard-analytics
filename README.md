@@ -7,10 +7,24 @@ Lien du repository : <https://github.com/Amine-maker/projet-dashboard-analytics>
 ### Dépendances
 
 * [docker](https://docs.docker.com/engine/install/)
+* [maven](https://maven.apache.org/download.cgi)
 
 ### Environnement local
 
-* pour lancer les conteneurs (spring, mongodb, react)
+* (Pour git) Création du .jar
+
+```shell
+cd dashboard-api
+```
+
+```shell
+mvn clean package
+```
+
+
+
+
+* Pour lancer les conteneurs (spring, mongodb, react)
 
 ```shell
 docker-compose build
