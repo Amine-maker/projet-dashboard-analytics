@@ -1,0 +1,14 @@
+version: "3.8"
+services:
+  dashboard-api:
+    build: .
+    container_name: "dashboard-container"
+    ports:
+      - 5000:5000
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    ports:
+      - 27070:27017
+    volumes:
+      - ./init_data/mongodb_data.js:/docker-entrypoint-initdb.d/init-mongo.js:ro

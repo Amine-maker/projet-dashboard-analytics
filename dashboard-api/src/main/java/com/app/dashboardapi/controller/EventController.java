@@ -20,7 +20,7 @@ public class EventController {
 
     @PostMapping(path = SEND_MESSAGE)
     public ResponseEntity<MessageResponse> sendDashboardDataMessage(@RequestBody EventMessage message,
-                                                                    HttpServletRequest request) {
+            HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
         ddmService.sendEvent(message);
         message.setUserAgent(userAgent);
