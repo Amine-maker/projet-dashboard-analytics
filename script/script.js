@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8080/api";
+const API_URL = 'http://localhost:5000/api'
 
 // const sendCustomMessage = (option) => {
 //   return {
@@ -6,115 +6,128 @@ const API_URL = "http://localhost:8080/api";
 //   };
 // };
 
-const siteId = 1;
-const clientId = 2;
-const clientTimestamp = Date.now();
+const clientTimestamp = Date.now()
+let eventsQueue = []
+let eventMetadata = {}
 
-const sendResizeEvent = (resizePayload) => {
-  return {
-    parameters: resizePayload,
-  };
-};
+function generateSelector (context) {
+  let pathSelector
 
-const sendClickEvent = (clickPayload) => {
-  return {
-    parameters: clickPayload,
-  };
-};
-
-const body = {
-  siteId,
-  clientId,
-  clientTimestamp,
-};
-
-function generateSelector(context) {
-  let index, pathSelector;
-
-  if (context === "null") throw new Error("not an dom reference");
+  if (context === 'null') throw new Error('not an dom reference')
   // call getIndex function
-  index = getIndex(context);
+  const index = getIndex(context)
   while (context.tagName) {
     // selector path
-    let classList = Array.from(context.classList)
-      .map((cls) => "." + cls)
-      .join("");
-    //dataset = getDataSet(context);
+    const classList = Array.from(context.classList)
+      .map((cls) => '.' + cls)
+      .join('')
+    // dataset = getDataSet(context);
     pathSelector =
       context.localName +
-      (classList ? classList : "") +
-      //(dataset ? dataset : "") +
-      (pathSelector ? ">" + pathSelector : "");
-    context = context.parentNode;
+      (classList || '') +
+      // (dataset ? dataset : "") +
+      (pathSelector ? '>' + pathSelector : '')
+    context = context.parentNode
   }
   // selector path for nth of type
-  pathSelector = pathSelector + `:nth-of-type(${index})`;
-  return pathSelector;
+  pathSelector = pathSelector + `:nth-of-type(${index})`
+  return pathSelector
 }
 
 // get index for nth of type element
 const getIndex = (node) => {
-  let i = 1;
-  let tagName = node.tagName;
+  let i = 1
+  const tagName = node.tagName
 
   while (node.previousSibling) {
-    node = node.previousSibling;
+    node = node.previousSibling
     if (
       node.nodeType === 1 &&
       tagName.toLowerCase() === node.tagName.toLowerCase()
     ) {
-      i++;
+      i++
     }
   }
-  return i;
-};
+  return i
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  document.body.addEventListener("click", (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+  document.body.addEventListener('click', (e) => {
     // selector output
-    let output = generateSelector(e.target);
+    const output = generateSelector(e.target)
 
-    console.log(output);
     // element that you select
-    let element = document.querySelector(output);
+    const element = document.querySelector(output)
 
     const elementPayload = {
       innerText: element.innerText.slice(0, 100),
-      cssSelector: output,
-    };
-    sendClickEvent({ elementPayload });
-    console.log(elementPayload);
-  });
+      cssSelector: output
+    }
+    eventsQueue.push({ type: 'click', ...elementPayload }
+
+    )
+  })
 
   // resize
-  const resizeObserver = new ResizeObserver((entries) => {
+  const resizeObserver = new ResizeObserver(debounce(entries => {
     for (const entry of entries) {
-      const cr = entry.contentRect;
-      const { width, height } = cr;
-      console.log(width, height);
-      sendResizeEvent({ width, height });
+      const cr = entry.contentRect
+      const { width, height } = cr
+      console.log(width, height)
+      eventsQueue.push({ type: 'resize', ...{ width, height } })
     }
-  });
+  }, 250))
 
-  resizeObserver.observe(document.querySelector("html"));
-});
+  resizeObserver.observe(document.querySelector('html'))
+})
 
-// gestion de pile a envoyer
+const sendEventBatch = ({ clientId, siteId }) => {
+  const eventsToSend = [...eventsQueue]
+  eventsQueue = []
+  eventMetadata = { clientId, siteId, clientTimestamp }
+  console.log({ events: eventsToSend, ...eventMetadata });
+  (async () => {
+    const response = await fetch(`${API_URL}/event`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ events: eventsToSend, ...eventMetadata }),
+      parameters: {
+        siteId, clientId
+      }
+    })
 
+    const content = await response.text()
+    console.log(content)
+  })()
+}
 
+const InitApplication = (option) => {
+  console.log(option)
+  // verfification du clientId et du siteId s'ils existent
+  // lancement d'un interval de x secondes qui envoie les requetes au serveur
 
-//setInterval(() => {
-(async () => {
-  const response = await fetch(`${API_URL}/event`, {
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(body),
-  });
+  const eventInterval = setInterval(() => sendEventBatch(option), 30000)
 
-  const content = await response.text();
-  console.log(content);
-})();
-//}, 2000);
+  // si pas bon
+  // clearInterval(eventInterval)
+  // eventInterval = null
+
+  // ensuite on lance l'event si tout est bon
+}
+
+InitApplication({ siteId: '123456789', clientId: '123' })
+
+function debounce (func, wait) {
+  let timeout
+  return function () {
+    const context = this
+    const args = arguments
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      func.apply(context, args)
+    }, wait)
+  }
+}

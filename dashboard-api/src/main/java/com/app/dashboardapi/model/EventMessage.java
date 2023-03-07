@@ -3,6 +3,7 @@ package com.app.dashboardapi.model;
 import java.util.ArrayList;
 
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -13,8 +14,8 @@ public class EventMessage {
     @Id
     private String id;
 
-    private Long clientId;
-    private Long siteId;
+    private String clientId;
+    private String siteId;
     private String windowSize;
     private Long clientTimestamp;
 
@@ -22,16 +23,16 @@ public class EventMessage {
 
     private String userAgent;
 
-    private ArrayList<InnerIClick> clicks;
+    private ArrayList<InnerIEvents> events;
 
-    public EventMessage(String id, Long clientId, Long siteId, String windowSize, Long clientTimestamp,
-                        ArrayList<InnerIClick> clicks) {
+    public EventMessage(String id, String clientId, String siteId, String windowSize, Long clientTimestamp,
+                        ArrayList<InnerIEvents> events) {
         this.id = id;
         this.clientId = clientId;
         this.siteId = siteId;
         this.windowSize = windowSize;
         this.clientTimestamp = clientTimestamp;
-        this.clicks = clicks;
+        this.events = events;
     }
 
 }

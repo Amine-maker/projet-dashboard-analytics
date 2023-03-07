@@ -1,6 +1,7 @@
 package com.app.dashboardapi.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.validation.constraints.NotBlank;
@@ -32,6 +33,9 @@ public class User {
 
     @DBRef
     private Set<Role> roles = new HashSet<>();
+
+    @DBRef
+    private List<Site> site;
 
     public User(String username, String email, String password) {
         this.username = username;

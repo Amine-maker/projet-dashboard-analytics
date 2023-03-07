@@ -32,7 +32,7 @@ public class EventController {
     }
 
     @GetMapping(path = "/api/event/getEvents")
-    public ResponseEntity<List<EventMessage>> getEventsBySiteId(@RequestParam Long siteId) {
+    public ResponseEntity<List<EventMessage>> getEventsBySiteId(@RequestParam String siteId) {
         List<EventMessage> events = ddmService.getAllEventBySiteId(siteId)
                 .orElseThrow(() -> new UsernameNotFoundException("Aucun events pour ce site"));
         return ResponseEntity.ok(events);

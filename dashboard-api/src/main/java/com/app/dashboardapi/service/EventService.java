@@ -23,7 +23,7 @@ public class EventService {
         dashboardRepository.save(message);
     }
 
-    public Optional<List<EventMessage>> getAllEventBySiteId(Long siteId) {
+    public Optional<List<EventMessage>> getAllEventBySiteId(String siteId) {
         return dashboardRepository.findAllBySiteId(siteId);
     }
 }
