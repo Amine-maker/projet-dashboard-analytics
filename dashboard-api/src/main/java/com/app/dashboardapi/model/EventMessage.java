@@ -14,20 +14,21 @@ public class EventMessage {
     private String id;
 
     private Long clientId;
-    private Long appId;
+    private Long siteId;
     private String windowSize;
     private Long clientTimestamp;
+
     private Long serverTimestamp;
 
     private String userAgent;
 
     private ArrayList<InnerIClick> clicks;
 
-    public EventMessage(String id, Long clientId, Long appId, String windowSize, Long clientTimestamp,
+    public EventMessage(String id, Long clientId, Long siteId, String windowSize, Long clientTimestamp,
                         ArrayList<InnerIClick> clicks) {
         this.id = id;
         this.clientId = clientId;
-        this.appId = appId;
+        this.siteId = siteId;
         this.windowSize = windowSize;
         this.clientTimestamp = clientTimestamp;
         this.clicks = clicks;

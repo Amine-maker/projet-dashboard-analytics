@@ -6,7 +6,7 @@ const API_URL = "http://localhost:8080/api";
 //   };
 // };
 
-const appId = 1;
+const siteId = 1;
 const clientId = 2;
 const clientTimestamp = Date.now();
 
@@ -23,7 +23,7 @@ const sendClickEvent = (clickPayload) => {
 };
 
 const body = {
-  appId,
+  siteId,
   clientId,
   clientTimestamp,
 };
@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 //setInterval(() => {
 (async () => {
-  const response = await fetch(`${API_URL}/sendMessage`, {
+  const response = await fetch(`${API_URL}/event`, {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",

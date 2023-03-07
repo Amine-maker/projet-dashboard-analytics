@@ -7,11 +7,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.app.dashboardapi.utils.apiUrl.SEND_MESSAGE;
 
-@ResponseBody
 @RestController
 @CrossOrigin(origins = "*")
 public class EventController {
@@ -21,20 +23,18 @@ public class EventController {
 
     @PostMapping(path = SEND_MESSAGE)
     public ResponseEntity<MessageResponse> sendEvent(@RequestBody EventMessage message,
-            HttpServletRequest request) {
+                                                     HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
-        ddmService.sendEvent(message);
+
         message.setUserAgent(userAgent);
-        String ipAddress = request.getHeader("X-Forwarded-For");
-        if (ipAddress == null) {
-            ipAddress = request.getRemoteAddr();
-            System.out.println(ipAddress);
-        }
+        ddmService.sendEvent(message);
         return ResponseEntity.ok(new MessageResponse("Good"));
     }
 
-    // public getEventsBySiteId(String siteId) {
-
-    // }
-
+    @GetMapping(path = "/api/event/getEvents")
+    public ResponseEntity<List<EventMessage>> getEventsBySiteId(@RequestParam Long siteId) {
+        List<EventMessage> events = ddmService.getAllEventBySiteId(siteId)
+                .orElseThrow(() -> new UsernameNotFoundException("Aucun events pour ce site"));
+        return ResponseEntity.ok(events);
+    }
 }

@@ -28,7 +28,7 @@ public class UserController {
 
     @Autowired
     private JwtTokenUtil jwtUtils;
-
+    
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String userAccess() {
