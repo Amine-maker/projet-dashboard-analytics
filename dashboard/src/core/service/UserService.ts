@@ -15,14 +15,12 @@ class UserService {
     try {
       // Si le token est présent, on le décode pour récupérer les informations de l'utilisateur
       const decodedToken: any = jwtDecode(token);
-      console.log(decodedToken);
 
       const username: string = decodedToken.sub;
       console.log(username);
       // l'ID de l'utilisateur est stocké dans le claim "sub" du token
       // return userId;
       return await axiosInstance.get<ApiUser>(`${API_URL}/user/info/${username}`).then((response) => {
-        console.log(response);
         return response.data;
       });
     } catch (error) {

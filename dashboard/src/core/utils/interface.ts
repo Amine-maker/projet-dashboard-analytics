@@ -36,3 +36,10 @@ export interface IRegisterPayload {
   username: string;
   roles?: Role[];
 }
+
+export interface ILinks {
+  to: string;
+  hidden: boolean;
+  displayName: string;
+  selected: boolean;
+}

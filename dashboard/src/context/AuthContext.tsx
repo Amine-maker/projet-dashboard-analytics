@@ -27,7 +27,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
 
   const signin = async (userPayload: ILoginPayload, callback: VoidFunction): Promise<void> => {
     const u = await AuthService.signin(userPayload, () => {
-      console.log("test signin successful");
+      console.log("signin successful");
       callback();
     });
 

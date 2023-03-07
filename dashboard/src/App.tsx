@@ -3,6 +3,8 @@ import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import AuthForm from "./components/auth/AuthForm";
 import RegisterForm from "./components/auth/RegisterForm";
 import LayoutComponent from "./components/layout/LayoutComponent";
+import { Dashboard } from "./components/page/DashboardComponent";
+import { ProfilePage } from "./components/page/ProfilePageComponent";
 import AuthProvider from "./context/AuthContext";
 import { useAuth } from "./hooks/AuthHook";
 
@@ -19,7 +21,15 @@ export default function App(): JSX.Element {
             path="/dashboard"
             element={
               <RequireAuth>
-                <ProtectedPage />
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <ProfilePage />
               </RequireAuth>
             }
           />

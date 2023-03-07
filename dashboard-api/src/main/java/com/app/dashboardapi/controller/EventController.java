@@ -6,6 +6,7 @@ import com.app.dashboardapi.utils.MessageResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import static com.app.dashboardapi.utils.apiUrl.SEND_MESSAGE;
@@ -19,12 +20,21 @@ public class EventController {
     private EventService ddmService;
 
     @PostMapping(path = SEND_MESSAGE)
-    public ResponseEntity<MessageResponse> sendDashboardDataMessage(@RequestBody EventMessage message,
+    public ResponseEntity<MessageResponse> sendEvent(@RequestBody EventMessage message,
             HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
         ddmService.sendEvent(message);
         message.setUserAgent(userAgent);
+        String ipAddress = request.getHeader("X-Forwarded-For");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+            System.out.println(ipAddress);
+        }
         return ResponseEntity.ok(new MessageResponse("Good"));
     }
+
+    // public getEventsBySiteId(String siteId) {
+
+    // }
 
 }

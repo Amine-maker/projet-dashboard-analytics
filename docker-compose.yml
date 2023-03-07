@@ -5,6 +5,8 @@ services:
     container_name: "dashboard-container"
     ports:
       - 5000:5000
+    volumes:
+      - ./dashboard-api:/usr/src/app/dashboard-api
   mongodb:
     image: mongo:latest
     container_name: "mongodb"
@@ -18,5 +20,5 @@ services:
     ports:
       - 5173:5173
     volumes:
-       - ./dashboard:/usr/src/app/my-app
+       - ./dashboard:/usr/src/app/dashboard
        - /usr/src/app/my-app/node_modules
