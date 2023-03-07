@@ -1,12 +1,12 @@
 package com.app.dashboardapi.controller;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.app.dashboardapi.model.Site;
+import com.app.dashboardapi.service.SiteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -48,7 +48,7 @@ public class AuthController {
 
     @Autowired
     JwtTokenUtil jwtUtils;
-
+    
     @PostMapping(LOGIN_URL)
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(

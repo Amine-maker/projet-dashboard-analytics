@@ -35,7 +35,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @DBRef
-    private List<Site> site;
+    private List<Site> sites;
 
     public User(String username, String email, String password) {
         this.username = username;
