@@ -6,20 +6,12 @@ const mainEl = document.querySelector('#dadasha')
 //   };
 // };
 
-
 const clientTimestamp = Date.now()
 let eventsQueue = []
 let eventMetadata = {}
 
-
 const clientIdDataAttribute = mainEl.getAttribute('data-clientId')
 const siteIdDataAttribute = mainEl.getAttribute('data-siteId')
-
-
-if(clientIdDataAttribute && siteIdDataAttribute) {
-  InitDadasha({ siteIdDataAttribute, clientIdDataAttribute})
-}
-
 
 function generateSelector (context) {
   let pathSelector
@@ -45,7 +37,6 @@ function generateSelector (context) {
   return pathSelector
 }
 
-
 function debounce (func, wait) {
   let timeout
   return function () {
@@ -57,7 +48,6 @@ function debounce (func, wait) {
     }, wait)
   }
 }
-
 
 // get index for nth of type element
 const getIndex = (node) => {
@@ -112,9 +102,9 @@ const sendEventBatch = ({ clientId, siteId }) => {
   eventMetadata = { clientId, siteId, clientTimestamp }
   console.log({ events: eventsToSend, ...eventMetadata });
   (async () => {
-    if(eventsToSend.length === 0){
-      console.log("vide");
-      return 
+    if (eventsToSend.length === 0) {
+      console.log('vide')
+      return
     }
     const response = await fetch(`${API_URL}/event`, {
       headers: {
@@ -134,16 +124,9 @@ const sendEventBatch = ({ clientId, siteId }) => {
 }
 
 export const InitDadasha = (option) => {
-  console.log(option)
-  // verfification du clientId et du siteId s'ils existent
-  // lancement d'un interval de x secondes qui envoie les requetes au serveur
-
-  const eventInterval = setInterval(() => sendEventBatch(option), 5000)
-
-  // si pas bon
-  // clearInterval(eventInterval)
-  // eventInterval = null
-
-  // ensuite on lance l'event si tout est bon
+  setInterval(() => sendEventBatch(option), 5000)
 }
 
+if (clientIdDataAttribute && siteIdDataAttribute) {
+  InitDadasha({ siteIdDataAttribute, clientIdDataAttribute })
+}

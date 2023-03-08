@@ -15,12 +15,6 @@ const LayoutComponent = (): JSX.Element => {
 
   const links: ILinks[] = [
     {
-      to: "/dashboard",
-      selected: isSelected("/dashboard"),
-      hidden: !isAuth,
-      displayName: "Dashboard",
-    },
-    {
       to: "/dashboard/:siteId",
       selected: isSelected("/dashboard/:siteId"),
       hidden: !isAuth,
@@ -64,7 +58,7 @@ const LayoutComponent = (): JSX.Element => {
               </ul>
             </div>
           </div>
-          <div className="p-4">
+          <div className={`p-4 ${!isAuth ? "hidden" : ""}`}>
             <button
               onClick={() => {
                 signout(() => {
@@ -78,7 +72,7 @@ const LayoutComponent = (): JSX.Element => {
                 <path d="M12 1a1 1 0 0 1 1 1v13h1.5a.5.5 0 0 1 0 1h-13a.5.5 0 0 1 0-1H3V2a1 1 0 0 1 1-1h8zm-2 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
               </svg>
             </button>{" "}
-            <span className="font-bold text-sm ml-2">Logout</span>
+            <span className="font-bold text-sm ml-2">Déconnexion</span>
           </div>
         </div>
       </aside>

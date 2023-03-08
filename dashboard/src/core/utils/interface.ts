@@ -32,8 +32,8 @@ export interface ApiUser extends Omit<IUser, "roles"> {
   authorities: Array<{ authority: string }>;
 }
 
-export interface UiRenderIf<T> {
-  children: T;
+export interface UiRenderIf {
+  children: any;
   isTrue: boolean;
 }
 

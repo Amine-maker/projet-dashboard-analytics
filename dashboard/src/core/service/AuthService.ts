@@ -1,6 +1,6 @@
 import { API_URL } from "../utils/constante";
 import { type ApiUserDataToken, type ILoginPayload, type IRegisterPayload, type IUser } from "../utils/interface";
-import axiosInstance from "./ApiService";
+import axiosInstance from "./ApiInterceptor";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
 class AuthService {
@@ -16,6 +16,7 @@ class AuthService {
           id: dataTokenUser.id,
           roles: dataTokenUser.roles,
           username: dataTokenUser.username,
+          sites: dataTokenUser.sites,
         };
         this.isAuthenticated = true;
         localStorage.setItem("token", token);
@@ -39,6 +40,7 @@ class AuthService {
             id: registerUser.id,
             roles: registerUser.roles,
             username: registerUser.username,
+            sites: registerUser.sites,
           };
           void this.signin({ username: payload.username, password: payload.password }, () => {
             console.log("good signin");
