@@ -32,7 +32,7 @@ export const FormAddSiteComponent = ({ isDialogOpened, handleCloseDialog }: any)
         <DialogContent>
           <DialogContentText>Ajouter un site pour pouvoir visualiser des données.</DialogContentText>
 
-          <form onSubmit={handleSubmitSite}>
+          <form className="mt-8" onSubmit={handleSubmitSite}>
             <label htmlFor="siteName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
               Nom du site
             </label>

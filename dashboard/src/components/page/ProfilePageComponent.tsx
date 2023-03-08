@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useAuth } from "../../hooks/AuthHook";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
@@ -10,7 +10,7 @@ export const ProfilePage = (): JSX.Element => {
 
   const [selectedSite, setSelectedSite] = useState<string>(user?.sites != null && user.sites.length > 0 ? user.sites[0].id : "vide");
 
-  useEffect(() => {
+  useCallback(() => {
     setSelectedSite(selectedSite);
   }, [selectedSite]);
 
@@ -79,13 +79,13 @@ export const ProfilePage = (): JSX.Element => {
                     </SyntaxHighlighter>
                     <br />
                     <p className="p-3 font-bold info-script">
-                      Vous pouvez passez dans le html via les attributs <br /> <span className="text-sm variable">data-siteId</span> & <span className="variable text-sm">data-clientId</span>
+                      Vous pouvez passez dans le html via les attributs <br /> <span className="text-sm variable">data-siteId</span> & <span className="variable text-sm">data-clientId</span>. L&apos;identifiant dans la balise est important.
                     </p>
                     <SyntaxHighlighter showLineNumbers lineNumberStyle={{ color: "#7e7e7e" }} customStyle={{ borderRadius: "13px", width: "100%", height: "100%" }} language="html" style={nightOwl}>
                       {codeString}
                     </SyntaxHighlighter>
                     <br />
-                    <p className="p-3 font-bold info-script">Ou alors via un script qui récupère la fonction d&apos;initialistion </p>
+                    <p className="p-3 font-bold info-script">Ou alors via un script qui récupère la fonction d&apos;initialisation </p>
                     <SyntaxHighlighter showLineNumbers lineNumberStyle={{ color: "#7e7e7e" }} customStyle={{ borderRadius: "13px", width: "100%", height: "100%" }} language="javascript" style={nightOwl}>
                       {funcIntegrationCode}
                     </SyntaxHighlighter>
