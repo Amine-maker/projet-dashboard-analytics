@@ -1,5 +1,6 @@
 package com.app.dashboardapi.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,7 +36,7 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @DBRef
-    private List<Site> sites;
+    private List<Site> sites = new ArrayList<>();
 
     public User(String username, String email, String password) {
         this.username = username;

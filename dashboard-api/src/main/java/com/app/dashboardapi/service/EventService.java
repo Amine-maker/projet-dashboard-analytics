@@ -21,6 +21,7 @@ public class EventService {
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         message.setServerTimestamp(timestamp.getTime());
         dashboardRepository.save(message);
+
     }
 
     public Optional<List<EventMessage>> getAllEventBySiteId(String siteId) {

@@ -1,5 +1,6 @@
 package com.app.dashboardapi.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
@@ -9,9 +10,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.app.dashboardapi.model.Site;
 import com.app.dashboardapi.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.Data;
+
+@Data
 public class CustomUserDetails implements UserDetails {
     private static final long serialVersionUID = 1L;
 
@@ -26,13 +31,16 @@ public class CustomUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String id, String username, String email, String password,
+    private List<Site> sites = new ArrayList<Site>();
+
+    public CustomUserDetails(String id, String username, String email, String password, List<Site> sites,
             Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.authorities = authorities;
+        this.sites = sites;
     }
 
     public static CustomUserDetails build(User user) {
@@ -45,16 +53,13 @@ public class CustomUserDetails implements UserDetails {
                 user.getUsername(),
                 user.getEmail(),
                 user.getPassword(),
+                user.getSites(),
                 authorities);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getEmail() {

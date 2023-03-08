@@ -26,9 +26,6 @@ public class UserController {
     @Autowired
     AuthTokenFilter authTokenFilter;
 
-    @Autowired
-    private JwtTokenUtil jwtUtils;
-    
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public String userAccess() {
@@ -45,14 +42,12 @@ public class UserController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getUserFromUsername(@PathVariable String username, HttpServletRequest request) {
 
-        String token = authTokenFilter.parseJwt(request);
-        String tokenUsername = jwtUtils.getUsernameFromToken(token);
-
-        if (Objects.equals(username, tokenUsername)) {
+        if (authTokenFilter.isAuthUser(username, request)) {
             UserDetails user = userDetailsService.loadUserByUsername(username);
             return ResponseEntity.ok(user);
         } else {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+            return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                    .body("Vous n'êtes pas autorisé à effectuer cette requête");
         }
 
     }

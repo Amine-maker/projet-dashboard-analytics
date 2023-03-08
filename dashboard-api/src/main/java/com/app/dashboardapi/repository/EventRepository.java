@@ -10,4 +10,6 @@ public interface EventRepository extends MongoRepository<EventMessage, String> {
     Optional<List<EventMessage>> findAllByClientId(String clientId);
 
     Optional<List<EventMessage>> findAllBySiteId(String siteId);
+
+    Optional<List<EventMessage>> deleteAllBySiteId(String siteId);
 }
