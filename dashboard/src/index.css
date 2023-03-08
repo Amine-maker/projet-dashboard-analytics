@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+p.info-script {
+  border: 1px solid #565656;
+  border-bottom: none;
+  margin-bottom: -9px;
+  padding-bottom: 22px;
+  border-radius: 10px 10px 0 0;
+  background: #041526;
+  color: #c3c3c3;
+  padding-left: 25px;
+  line-height: 1.6em;
+}
+
+span.variable {
+  padding: 4px;
+  border-radius: 7px;
+  background: #103d7e;
+  color: #f3fbff;
+}

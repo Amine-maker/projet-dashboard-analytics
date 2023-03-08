@@ -10,6 +10,12 @@ export interface IUser {
   username: string;
   email: string;
   roles: string[];
+  sites: Site[];
+}
+
+export interface Site {
+  id: string;
+  name: string;
 }
 
 export interface ApiUserDataToken {
@@ -19,6 +25,7 @@ export interface ApiUserDataToken {
   tokenType: string;
   username: string;
   email: string;
+  sites: Site[];
 }
 
 export interface ApiUser extends Omit<IUser, "roles"> {

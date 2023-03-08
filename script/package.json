@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "amine",
+  "type": "module",
   "license": "ISC",
   "devDependencies": {
     "eslint": "^8.35.0",

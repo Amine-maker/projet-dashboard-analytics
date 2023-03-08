@@ -1,14 +1,25 @@
 const API_URL = 'http://localhost:5000/api'
-
+const mainEl = document.querySelector('#dadasha')
 // const sendCustomMessage = (option) => {
 //   return {
 //     ...option,
 //   };
 // };
 
+
 const clientTimestamp = Date.now()
 let eventsQueue = []
 let eventMetadata = {}
+
+
+const clientIdDataAttribute = mainEl.getAttribute('data-clientId')
+const siteIdDataAttribute = mainEl.getAttribute('data-siteId')
+
+
+if(clientIdDataAttribute && siteIdDataAttribute) {
+  InitDadasha({ siteIdDataAttribute, clientIdDataAttribute})
+}
+
 
 function generateSelector (context) {
   let pathSelector
@@ -33,6 +44,20 @@ function generateSelector (context) {
   pathSelector = pathSelector + `:nth-of-type(${index})`
   return pathSelector
 }
+
+
+function debounce (func, wait) {
+  let timeout
+  return function () {
+    const context = this
+    const args = arguments
+    clearTimeout(timeout)
+    timeout = setTimeout(() => {
+      func.apply(context, args)
+    }, wait)
+  }
+}
+
 
 // get index for nth of type element
 const getIndex = (node) => {
@@ -87,6 +112,10 @@ const sendEventBatch = ({ clientId, siteId }) => {
   eventMetadata = { clientId, siteId, clientTimestamp }
   console.log({ events: eventsToSend, ...eventMetadata });
   (async () => {
+    if(eventsToSend.length === 0){
+      console.log("vide");
+      return 
+    }
     const response = await fetch(`${API_URL}/event`, {
       headers: {
         'Content-Type': 'application/json',
@@ -104,12 +133,12 @@ const sendEventBatch = ({ clientId, siteId }) => {
   })()
 }
 
-const InitApplication = (option) => {
+export const InitDadasha = (option) => {
   console.log(option)
   // verfification du clientId et du siteId s'ils existent
   // lancement d'un interval de x secondes qui envoie les requetes au serveur
 
-  const eventInterval = setInterval(() => sendEventBatch(option), 30000)
+  const eventInterval = setInterval(() => sendEventBatch(option), 5000)
 
   // si pas bon
   // clearInterval(eventInterval)
@@ -118,16 +147,3 @@ const InitApplication = (option) => {
   // ensuite on lance l'event si tout est bon
 }
 
-InitApplication({ siteId: '123456789', clientId: '123' })
-
-function debounce (func, wait) {
-  let timeout
-  return function () {
-    const context = this
-    const args = arguments
-    clearTimeout(timeout)
-    timeout = setTimeout(() => {
-      func.apply(context, args)
-    }, wait)
-  }
-}

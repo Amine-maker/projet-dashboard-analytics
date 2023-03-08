@@ -19,6 +19,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
             roles: user.authorities.map((role) => role.authority),
             id: user.id,
             username: user.username,
+            sites: user.sites,
           });
         }
       });

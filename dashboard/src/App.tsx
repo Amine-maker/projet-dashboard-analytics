@@ -13,10 +13,18 @@ export default function App(): JSX.Element {
     <AuthProvider>
       <Routes>
         <Route element={<LayoutComponent />}>
-          <Route path="/" element={<PublicPage />} />
+          <Route path="/" element={<Navigate replace={true} to={"/login"}></Navigate>} />
           <Route path="/login" element={<AuthForm />} />
           <Route path="/register" element={<RegisterForm />} />
 
+          <Route
+            path="/dashboard/:siteId"
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/dashboard"
             element={
@@ -48,12 +56,4 @@ function RequireAuth({ children }: { children: JSX.Element }): JSX.Element {
   }
 
   return children;
-}
-
-function PublicPage(): JSX.Element {
-  return <h3>Public</h3>;
-}
-
-export function ProtectedPage(): JSX.Element {
-  return <h3>Protected</h3>;
 }

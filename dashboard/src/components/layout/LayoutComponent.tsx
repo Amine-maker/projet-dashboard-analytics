@@ -20,6 +20,12 @@ const LayoutComponent = (): JSX.Element => {
       hidden: !isAuth,
       displayName: "Dashboard",
     },
+    {
+      to: "/dashboard/:siteId",
+      selected: isSelected("/dashboard/:siteId"),
+      hidden: !isAuth,
+      displayName: "Dashboard",
+    },
     { to: "/profile", hidden: !isAuth, displayName: "Profile", selected: isSelected("/profile") },
     {
       to: "/login",
