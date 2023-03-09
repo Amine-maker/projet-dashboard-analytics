@@ -8,7 +8,7 @@ const RegisterForm = (): JSX.Element => {
   const location = useLocation();
   const auth = useAuth();
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/profile";
 
   useEffect(() => {
     if (auth.isAuth) {
@@ -25,7 +25,7 @@ const RegisterForm = (): JSX.Element => {
     const email = formData.get("email") as string;
 
     auth.register({ username, password, email, roles: [Role.USER] }, () => {
-      navigate(from, { replace: true });
+      navigate("/profile", { replace: true });
     });
   }
 

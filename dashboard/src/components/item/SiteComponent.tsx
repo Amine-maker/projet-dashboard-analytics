@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { type Dispatch, type SetStateAction, useState } from "react";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import HighlightOffRoundedIcon from "@mui/icons-material/HighlightOffRounded";
@@ -9,7 +9,7 @@ import { useSite } from "../../hooks/SiteHook";
 
 interface PropSite {
   selectedSite: string;
-  onSiteChange: any;
+  onSiteChange: Dispatch<SetStateAction<string>>;
   children?: React.ReactElement;
 }
 

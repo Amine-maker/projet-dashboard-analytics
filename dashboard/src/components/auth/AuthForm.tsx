@@ -7,7 +7,7 @@ const AuthForm = (): JSX.Element => {
   const location = useLocation();
   const auth = useAuth();
   // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-  const from = location.state?.from?.pathname || "/dashboard";
+  const from = location.state?.from?.pathname || "/profile";
 
   useEffect(() => {
     if (auth.isAuth) {

@@ -1,5 +1,5 @@
 import { API_URL } from "../utils/constante";
-import { type Site } from "../utils/interface";
+import { type ApiEvents, type Site } from "../utils/interface";
 import axiosInstance from "./ApiInterceptor";
 
 // eslint-disable-next-line @typescript-eslint/no-extraneous-class
@@ -18,6 +18,20 @@ class SiteService {
     await axiosInstance.delete(`${API_URL}/site/remove`, { params: { siteId } }).then((site) => {
       console.log("site supprimé");
     });
+  }
+
+  public static async events(siteId: string): Promise<ApiEvents[]> {
+    return await axiosInstance
+      .get<ApiEvents[]>(`${API_URL}/event/getEvents`, {
+        params: {
+          siteId,
+        },
+      })
+      .then((eventsBatch) => {
+        return eventsBatch.data.map((events) => {
+          return events;
+        });
+      });
   }
 }
 

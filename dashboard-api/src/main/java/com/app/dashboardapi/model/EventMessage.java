@@ -16,7 +16,6 @@ public class EventMessage {
 
     private String clientId;
     private String siteId;
-    private String windowSize;
     private Long clientTimestamp;
 
     private Long serverTimestamp;
@@ -25,12 +24,11 @@ public class EventMessage {
 
     private ArrayList<InnerIEvents> events;
 
-    public EventMessage(String id, String clientId, String siteId, String windowSize, Long clientTimestamp,
-                        ArrayList<InnerIEvents> events) {
+    public EventMessage(String id, String clientId, String siteId, Long clientTimestamp,
+            ArrayList<InnerIEvents> events) {
         this.id = id;
         this.clientId = clientId;
         this.siteId = siteId;
-        this.windowSize = windowSize;
         this.clientTimestamp = clientTimestamp;
         this.events = events;
     }

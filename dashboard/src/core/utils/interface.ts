@@ -52,3 +52,21 @@ export interface ILinks {
   selected: boolean;
   icon?: any;
 }
+
+export interface ApiEvents {
+  id: string;
+  clientId: string;
+  siteId: string;
+  clientTimestamp: number;
+  serverTimestamp: number;
+  userAgent: string;
+  events: IEvent;
+}
+
+export interface IEvent {
+  cssSelector?: string;
+  innerText?: string;
+  type?: "resize" | "click";
+  width?: number;
+  height?: number;
+}
