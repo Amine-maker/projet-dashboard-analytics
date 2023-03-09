@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AuthService from "../core/service/AuthService";
 import UserService from "../core/service/UserService";
 import { type ILoginPayload, type IRegisterPayload, type IUser } from "../core/utils/interface";
@@ -10,7 +10,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
   const [isAuth, setIsAuthenticated] = useState<boolean>(false);
   const [token] = useState<string | null>(localStorage.getItem("token"));
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (token != null) {
       void UserService.getCurrentUser().then((user) => {
         if (user != null) {
@@ -41,12 +41,10 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
       console.log("test register successful");
       callback();
     });
-
-    console.log(u);
-
     setIsAuthenticated(true);
     setCurrentUser(u as IUser);
   };
+
   const signout = (callback: VoidFunction): void => {
     AuthService.signout(() => {
       setIsAuthenticated(false);

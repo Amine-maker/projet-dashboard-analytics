@@ -14,7 +14,7 @@ const RegisterForm = (): JSX.Element => {
     if (auth.isAuth) {
       navigate("/profile", { replace: true });
     }
-  });
+  }, []);
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();

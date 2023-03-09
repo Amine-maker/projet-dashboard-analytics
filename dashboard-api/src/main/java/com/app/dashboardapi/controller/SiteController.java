@@ -29,11 +29,11 @@ public class SiteController {
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @PostMapping("/add")
-    public ResponseEntity<MessageResponse> addSite(@RequestBody Site site, HttpServletRequest request) {
+    public ResponseEntity<Site> addSite(@RequestBody Site site, HttpServletRequest request) {
 
-        siteService.addSite(site);
+        Site newSite = siteService.addSite(site);
         customUserService.AddSiteToUserDetails(site);
-        return ResponseEntity.ok(new MessageResponse("site crée et affecté"));
+        return ResponseEntity.ok(newSite);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")

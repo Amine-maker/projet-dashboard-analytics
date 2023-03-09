@@ -8,7 +8,7 @@ export const ProfilePage = (): JSX.Element => {
   const { user } = useAuth();
   console.log(user);
 
-  const [selectedSite, setSelectedSite] = useState<string>(user?.sites != null && user.sites.length > 0 ? user.sites[0].id : "vide");
+  const [selectedSite, setSelectedSite] = useState<string>(user?.sites != null && user.sites.length > 0 ? user.sites[0].id : "Pas encore de site");
 
   useCallback(() => {
     setSelectedSite(selectedSite);

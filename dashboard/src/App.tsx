@@ -6,43 +6,46 @@ import LayoutComponent from "./components/layout/LayoutComponent";
 import { Dashboard } from "./components/page/DashboardComponent";
 import { ProfilePage } from "./components/page/ProfilePageComponent";
 import AuthProvider from "./context/AuthContext";
+import SiteProvider from "./context/SiteContext";
 import { useAuth } from "./hooks/AuthHook";
 
 export default function App(): JSX.Element {
   return (
     <AuthProvider>
-      <Routes>
-        <Route element={<LayoutComponent />}>
-          <Route path="/" element={<Navigate replace={true} to={"/login"}></Navigate>} />
-          <Route path="/login" element={<AuthForm />} />
-          <Route path="/register" element={<RegisterForm />} />
+      <SiteProvider>
+        <Routes>
+          <Route element={<LayoutComponent />}>
+            <Route path="/" element={<Navigate replace={true} to={"/login"}></Navigate>} />
+            <Route path="/login" element={<AuthForm />} />
+            <Route path="/register" element={<RegisterForm />} />
 
-          <Route
-            path="/dashboard/:siteId"
-            element={
-              <RequireAuth>
-                <Dashboard />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/dashboard"
-            element={
-              <RequireAuth>
-                <Dashboard />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <RequireAuth>
-                <ProfilePage />
-              </RequireAuth>
-            }
-          />
-        </Route>
-      </Routes>
+            <Route
+              path="/dashboard/:siteId"
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <RequireAuth>
+                  <ProfilePage />
+                </RequireAuth>
+              }
+            />
+          </Route>
+        </Routes>{" "}
+      </SiteProvider>
     </AuthProvider>
   );
 }

@@ -20,3 +20,7 @@ span.variable {
   background: #103d7e;
   color: #f3fbff;
 }
+
+.selected-site {
+  background-color: #89c9ff1f;
+}

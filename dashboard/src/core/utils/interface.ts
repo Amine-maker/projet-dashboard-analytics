@@ -16,6 +16,7 @@ export interface IUser {
 export interface Site {
   id: string;
   name: string;
+  userId: string;
 }
 
 export interface ApiUserDataToken {
@@ -49,4 +50,5 @@ export interface ILinks {
   hidden: boolean;
   displayName: string;
   selected: boolean;
+  icon?: any;
 }
