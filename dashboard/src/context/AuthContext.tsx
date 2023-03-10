@@ -9,10 +9,12 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
   const [user, setUser] = useState<IUser | null>(null);
   const [isAuth, setIsAuthenticated] = useState<boolean>(false);
   const [token] = useState<string | null>(localStorage.getItem("token"));
+  const { getCurrentUser } = UserService();
+  const authService = AuthService();
 
   useEffect(() => {
     if (token != null) {
-      void UserService.getCurrentUser().then((user) => {
+      void getCurrentUser().then((user) => {
         if (user != null) {
           setCurrentUser({
             email: user.email,
@@ -27,7 +29,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
   }, [token]);
 
   const signin = async (userPayload: ILoginPayload, callback: VoidFunction): Promise<void> => {
-    const u = await AuthService.signin(userPayload, () => {
+    const u = await authService.signin(userPayload, () => {
       console.log("signin successful");
       callback();
     });
@@ -37,7 +39,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
   };
 
   const register = async (userPayload: IRegisterPayload, callback: VoidFunction): Promise<void> => {
-    const u = await AuthService.register(userPayload, () => {
+    const u = await authService.register(userPayload, () => {
       console.log("test register successful");
       callback();
     });
@@ -46,7 +48,7 @@ function AuthProvider({ children }: { children: React.ReactNode }): JSX.Element 
   };
 
   const signout = (callback: VoidFunction): void => {
-    AuthService.signout(() => {
+    authService.signout(() => {
       setIsAuthenticated(false);
       setUser(null);
       callback();

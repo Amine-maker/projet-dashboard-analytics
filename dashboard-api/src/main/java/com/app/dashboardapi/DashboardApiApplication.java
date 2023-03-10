@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DashboardApiApplication {
 
 	public static void main(String[] args) {
-		System.out.println("testestest");
 		SpringApplication.run(DashboardApiApplication.class, args);
 	}
 
