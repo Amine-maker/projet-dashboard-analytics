@@ -25,12 +25,12 @@ function SiteProvider({ children }: { children: React.ReactNode }): JSX.Element 
     });
     callback();
   };
-  const deleteSite = async (siteId: string, callback: VoidFunction): Promise<void> => {
+  const deleteSite = async (siteId: string, callback?: VoidFunction): Promise<void> => {
     await siteService.remove(siteId);
     void getCurrentUser().then((user) => {
       setSites(user?.sites);
     });
-    callback();
+    if (callback != null) callback();
   };
 
   const getEvents = async (siteId: string): Promise<ApiEvents[]> => {
@@ -45,7 +45,7 @@ function SiteProvider({ children }: { children: React.ReactNode }): JSX.Element 
 export interface SiteContextType {
   sites?: Site[];
   addSite: (payload: SitePayload, callback: VoidFunction) => void;
-  deleteSite: (siteId: string, callback: VoidFunction) => void;
+  deleteSite: (siteId: string, callback?: VoidFunction) => void;
   getEvents: (siteId: string) => Promise<ApiEvents[]>;
 }
 export default SiteProvider;

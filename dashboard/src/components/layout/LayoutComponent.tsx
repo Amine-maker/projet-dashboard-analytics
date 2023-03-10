@@ -42,7 +42,8 @@ const LayoutComponent = (): JSX.Element => {
       <aside className="fixed z-50 inset-y-0 left-0 bg-white border-r border-gray-300 max-h-screen w-60">
         <div className="flex flex-col justify-between h-full">
           <div className="flex-grow">
-            <div className="px-4 py-6 text-center border-b">
+            <div className="px-4 flex justify-center items-center py-6 text-center border-b">
+              <img width={800} height={100} className="w-8 h-8 mr-2" src="https://res.cloudinary.com/dvbzs4nlk/image/upload/v1678042412/portfolio/logo-portfolio_rji67t.svg" alt="logo" />
               <h1 className="text-xl font-bold leading-none">Dadasha</h1>
             </div>
             <div className="p-4">

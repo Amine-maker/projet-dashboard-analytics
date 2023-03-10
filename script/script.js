@@ -1,5 +1,8 @@
 const API_URL = 'http://localhost:5000/api'
 const mainEl = document.querySelector('#dadasha')
+
+// il reste a ajouter les event custom
+
 // const sendCustomMessage = (option) => {
 //   return {
 //     ...option,

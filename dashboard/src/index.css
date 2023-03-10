@@ -21,6 +21,25 @@ span.variable {
   color: #f3fbff;
 }
 
-.selected-site {
-  background-color: #89c9ff1f;
+.data-container {
+  max-width: 500px;
+  max-height: 500px;
+  border: 1px solid rgb(206, 206, 206);
+  padding: 20px;
+  background: white;
+  border-radius: 20px;
+  margin: 20px;
+  flex: 1 1 0;
+  box-shadow: 4px 5px 20px #d1d1d133;
+}
+
+.info-metrics {
+  font-size: 16em;
+  line-height: 1;
+}
+
+.display-data {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }

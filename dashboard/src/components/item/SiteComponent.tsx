@@ -28,9 +28,7 @@ export const SiteComponent = (props: PropSite): JSX.Element => {
   };
 
   const handleDeleteSite = (sitId: string): void => {
-    deleteSite(sitId, () => {
-      console.log("coor");
-    });
+    deleteSite(sitId);
   };
 
   return (
@@ -39,7 +37,7 @@ export const SiteComponent = (props: PropSite): JSX.Element => {
       <RenderIf isTrue={!(sites == null)}>
         {sites?.map((site, i) => {
           return (
-            <div key={i} className={`p-4   border rounded-xl text-gray-800 space-y-2 ${isSelectedSite(site.id) ? "selected-site" : "bg-white"}`}>
+            <div key={i} className={`p-4   border rounded-xl text-gray-800 space-y-2 ${isSelectedSite(site.id) ? "bg-indigo-50" : "bg-white"}`}>
               <div className="flex justify-between">
                 <div className="text-gray-400 text-xs">Site ID : {site.id}</div>
                 <div className="flex gap-2">

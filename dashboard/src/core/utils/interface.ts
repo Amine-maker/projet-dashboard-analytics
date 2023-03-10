@@ -59,14 +59,23 @@ export interface ApiEvents {
   siteId: string;
   clientTimestamp: number;
   serverTimestamp: number;
+  ipAddress: string;
   userAgent: string;
-  events: IEvent;
+  events: IEvent[];
 }
 
 export interface IEvent {
   cssSelector?: string;
   innerText?: string;
-  type?: "resize" | "click";
+  type?: EventType;
   width?: number;
   height?: number;
 }
+
+export interface UserAgentData {
+  browser?: string;
+  device?: string;
+  os?: string;
+}
+
+export type EventType = "resize" | "click";

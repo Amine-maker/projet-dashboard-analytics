@@ -33,7 +33,10 @@ public class EventController {
     public ResponseEntity<MessageResponse> sendEvent(@RequestBody EventMessage message,
             HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
+        String ipAddress = request.getRemoteAddr();
+        System.out.println(ipAddress);
         message.setUserAgent(userAgent);
+        message.setIpAddress(ipAddress);
         ddmService.sendEvent(message);
         return ResponseEntity.ok(new MessageResponse("Good"));
     }
