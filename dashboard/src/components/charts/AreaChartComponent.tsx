@@ -25,19 +25,17 @@ const AreaChartComponent = (props: { events: ApiEvents[]; title: string }): JSX.
 
   const hours = Array.from({ length: 12 }, (_, index) => index * 2);
 
-  const h: number[] = [];
-  hours.map((hour) => {
-    const r = eventService.getUniqueValuesWithCount("clientTimestamp").filter((t) => getHours(t.value) === hour);
+  // const h: number[] = [];
+  // hours.map((hour) => {
+  //   const r = eventService.getUniqueValuesWithCount("clientTimestamp").filter((t) => getHours(t.value) === hour);
 
-    if (r.length > 0) {
-      console.log(r);
-      const count = r.reduce((current, acc) => (current.count += acc.count));
+  //   if (r.length > 0) {
+  //     console.log(r);
+  //     const count = r.reduce((current, acc) => current.count + acc.count);
 
-      h.push(count);
-    } else h.push(0);
-  });
-
-  console.log(h);
+  //     h.push(count);
+  //   } else h.push(0);
+  // });
 
   const labels = Array.from({ length: 12 }, (_, index) => index * 2);
 
@@ -47,7 +45,7 @@ const AreaChartComponent = (props: { events: ApiEvents[]; title: string }): JSX.
       {
         fill: true,
         label: "Nombre d'envoie d'evenements",
-        data: h, // labels.map(() => faker.datatype.number({ min: 0, max: 100 })),
+        data: labels.map(() => faker.datatype.number({ min: 0, max: 100 })),
         borderColor: "rgb(53, 162, 235)",
         backgroundColor: "rgba(53, 162, 235, 0.5)",
       },
