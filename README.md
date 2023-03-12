@@ -61,11 +61,16 @@ import InitDadasha from "/chemin/vers/script.js";
 ```javascript
 import InitDadasha, { sendCustomEvent } from "/chemin/vers/script.js";
 
-  const option = {
-     siteId: 'mon site id',
-     clientId: 'mon client id'
-   }
+monElement.addEventListener('click' /* peu importe l'evenement */, (e) => {
+    sendCustomEvent(
+    {
+      label : "mon evenement",
+      data : {
+        x : number,
+      }
+   })
+})
 
-   sendCustomEvent({})
+ 
 
 ```

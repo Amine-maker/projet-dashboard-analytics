@@ -125,7 +125,16 @@ const sendEventToApi = async (eventsToSend) => {
 }
 
 const sendCustomMessage = (option) => {
-  return eventsQueue.push({ type: 'custom', label: option.label })
+  return eventsQueue.push({
+    type: 'custom',
+    label: option.label,
+    ...(option.data && {
+      customData: {
+        x: option.data.x,
+        ...(option.data.y && { y: option.data.y })
+      }
+    })
+  })
 }
 
 console.log(clientIdDataAttribute && siteIdDataAttribute)

@@ -70,6 +70,13 @@ export interface IEvent {
   type?: EventType;
   width?: number;
   height?: number;
+  label?: string;
+  customData?: ICustomEventData;
+}
+
+export interface ICustomEventData {
+  x: number;
+  y?: number;
 }
 
 export interface UserAgentData {

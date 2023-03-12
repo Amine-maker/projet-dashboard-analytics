@@ -21,3 +21,8 @@ export const parseUserAgents = (userAgents: string[]): UserAgentData[] => {
 export const copyToClipboard = async (text: string): Promise<void> => {
   await navigator.clipboard.writeText(text);
 };
+
+export const getHours = (timestamp: number): number => {
+  const date = new Date(timestamp);
+  return date.getHours();
+};

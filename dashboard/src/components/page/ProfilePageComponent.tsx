@@ -28,10 +28,6 @@ export const ProfilePage = (): JSX.Element => {
     <script type="module" src="/chemin/vers/script.js"></script>
   `;
 
-  const customHtmlIntegrationCode = `
-    <script type="module" src="/chemin/vers/monScript.js"></script>
-  `;
-
   const funcIntegrationCode = `
   import InitDadasha from "/chemin/vers/script.js";
 
@@ -100,10 +96,7 @@ export const ProfilePage = (): JSX.Element => {
                     <SyntaxHighlighter showLineNumbers lineNumberStyle={{ color: "#7e7e7e" }} customStyle={{ borderRadius: "13px", width: "100%", height: "100%" }} language="javascript" style={nightOwl}>
                       {funcIntegrationCode}
                     </SyntaxHighlighter>
-                    <br />
-                    <SyntaxHighlighter showLineNumbers lineNumberStyle={{ color: "#7e7e7e" }} customStyle={{ borderRadius: "13px", width: "100%", height: "100%" }} language="html" style={nightOwl}>
-                      {customHtmlIntegrationCode}
-                    </SyntaxHighlighter>
+
                     <br />
                   </div>
                 </div>

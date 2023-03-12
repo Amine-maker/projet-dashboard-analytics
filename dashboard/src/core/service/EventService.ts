@@ -24,6 +24,19 @@ const EventService = (data: ApiEvents[]): IEventService => {
       }));
       return counts;
     },
+
+    getCounts<T extends keyof ApiEvents>(label: T): number[] {
+      return this.getUniqueValuesWithCount(label)
+        .map((ev) => {
+          return data.filter((events) => events[label] === ev.value).map((events) => events.events.length);
+        })
+        .flat(1);
+
+      // eventService.getUniqueValuesWithCount("clientTimestamp").map((ev) => {
+      //   console.log(getHours(ev.value), ev, eventService.getCounts("clientTimestamp", ev.value));
+      //   eventService.getCounts("clientTimestamp", ev.value);
+      // });
+    },
   };
 };
 
@@ -32,6 +45,7 @@ export interface IEventService {
   getData: () => ApiEvents[];
   getUnique: <T extends keyof ApiEvents>(type: T) => Array<ApiEvents[T]>;
   getUniqueValuesWithCount: <T extends keyof ApiEvents>(property: T) => Array<UniqueCount<ApiEvents[T]>>;
+  getCounts: <T extends keyof ApiEvents>(type: T) => number[];
 }
 
 export default EventService;
