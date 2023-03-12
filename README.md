@@ -43,7 +43,7 @@ data-site-id & data-client-id.
   </main>
 ```
 
-* Ou alors via un vos script personnalisé qui récupère la fonction d'initialisation
+* Ou alors via vos scripts personnalisé qui récupère la fonction d'initialisation
 
 ```javascript
 import InitDadasha from "/chemin/vers/script.js";
