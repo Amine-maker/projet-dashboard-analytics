@@ -21,7 +21,7 @@ docker-compose up --build
 
 ## Utilisation
 
-#### Récuperation et intégration du script <https://github.com/Amine-maker/projet-dashboard-analytics/script/script.js>
+#### Récuperation et intégration du script <https://github.com/Amine-maker/projet-dashboard-analytics/blob/main/script/script.js>
 
 * Vous pouvez passez dans le html via les attributs
 data-site-id & data-client-id. L'identifiant dans la balise est important.
