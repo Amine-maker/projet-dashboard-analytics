@@ -16,7 +16,7 @@ Lien du repository : <https://github.com/Amine-maker/projet-dashboard-analytics>
 docker-compose up --build
 ```
 
-* Backend : <http://localhost:5000/>
+* Backend : <http://localhost:5000>
 * Frontend : <http://localhost:5173>
 
 ## Utilisation
@@ -54,10 +54,6 @@ import InitDadasha from "/chemin/vers/script.js";
    }
    
    InitDadasha(option);
-```
-
-```html
- <script type="module" src="/chemin/vers/monScriptPersonnalise.js"></script>
 ```
 
 * Gestion d'évenements personnalisé
