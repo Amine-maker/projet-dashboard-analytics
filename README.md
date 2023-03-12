@@ -23,8 +23,15 @@ docker-compose up --build
 
 #### Récuperation et intégration du script <https://github.com/Amine-maker/projet-dashboard-analytics/blob/main/script/script.js>
 
-* Vous pouvez passez dans le html via les attributs
-data-site-id & data-client-id. L'identifiant dans la balise est important.
+* Intégration du fichier dans le html
+
+```html
+<script type="module" src="/chemin/vers/script.js"></script>
+```
+
+* Pour l'initialisation, vous pouvez soit passez dans le html via les attributs
+data-site-id & data-client-id.
+À noter que l'identifiant "#dadasha" dans la balise d'd'initialisation est important.
 
 ```html
  <main class="app" id="dadasha"
@@ -36,7 +43,7 @@ data-site-id & data-client-id. L'identifiant dans la balise est important.
   </main>
 ```
 
-* Ou alors via un script qui récupère la fonction d'initialisation
+* Ou alors via un vos script personnalisé qui récupère la fonction d'initialisation
 
 ```javascript
 import InitDadasha from "/chemin/vers/script.js";
@@ -47,6 +54,10 @@ import InitDadasha from "/chemin/vers/script.js";
    }
    
    InitDadasha(option);
+```
+
+```html
+ <script type="module" src="/chemin/vers/monScriptPersonnalise.js"></script>
 ```
 
 * Gestion d'évenements personnalisé
