@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useAuth } from "../../hooks/AuthHook";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { nightOwl } from "react-syntax-highlighter/dist/esm/styles/hljs";
 import { SiteComponent } from "../item/SiteComponent";
+import { copyToClipboard } from "../../core/utils/utils";
 
 export const ProfilePage = (): JSX.Element => {
   const { user } = useAuth();
-  console.log(user);
 
   const [selectedSite, setSelectedSite] = useState<string>(user?.sites != null && user.sites.length > 0 ? user.sites[0].id : "Pas encore de site");
 
@@ -16,20 +16,24 @@ export const ProfilePage = (): JSX.Element => {
 
   const codeString = `
   <main class="app" id="dadasha"
-    data-siteId="${selectedSite}"
-    data-clientId="${user?.id as string}">
-      <section>
+    data-site-id="${selectedSite}"
+    data-client-id="${user?.id as string}">
+    <section>
       mon app
-      </section>
-    </main>
+    </section>
+  </main>
   `;
 
   const htmlIntegrationCode = `
-    <script type="module" src="script.js"></script>
+    <script type="module" src="/chemin/vers/script.js"></script>
+  `;
+
+  const customHtmlIntegrationCode = `
+    <script type="module" src="/chemin/vers/monScript.js"></script>
   `;
 
   const funcIntegrationCode = `
-  import { InitDadasha } from "./script.js";
+  import InitDadasha from "/chemin/vers/script.js";
 
   const option = {
      siteId: '${selectedSite}',
@@ -58,7 +62,14 @@ export const ProfilePage = (): JSX.Element => {
                 <div className="flex items-center gap-x-2">
                   <div className="inline-flex items-center justify-center h-9 pl-5 pr-1 rounded-xl bg-gray-900 text-gray-300 hover:text-white text-sm font-semibold transition gap-4">
                     <span>UserId : {user?.id}</span>
-                    <button className="border border-opacity-50 border-gray-200 p-1 rounded-xl">
+                    <button
+                      onClick={() => {
+                        void (async () => {
+                          await copyToClipboard(user?.id as string);
+                        })();
+                      }}
+                      className="border border-opacity-50 border-gray-200 p-1 rounded-xl"
+                    >
                       <span className="text-xs">copier</span>
                     </button>
                   </div>
@@ -79,7 +90,7 @@ export const ProfilePage = (): JSX.Element => {
                     </SyntaxHighlighter>
                     <br />
                     <p className="p-3 font-bold info-script">
-                      Vous pouvez passez dans le html via les attributs <br /> <span className="text-sm variable">data-siteId</span> & <span className="variable text-sm">data-clientId</span>. L&apos;identifiant dans la balise est important.
+                      Vous pouvez passez dans le html via les attributs <br /> <span className="text-sm variable">data-site-id</span> & <span className="variable text-sm">data-client-id</span>. L&apos;identifiant dans la balise est important.
                     </p>
                     <SyntaxHighlighter showLineNumbers lineNumberStyle={{ color: "#7e7e7e" }} customStyle={{ borderRadius: "13px", width: "100%", height: "100%" }} language="html" style={nightOwl}>
                       {codeString}
@@ -90,11 +101,14 @@ export const ProfilePage = (): JSX.Element => {
                       {funcIntegrationCode}
                     </SyntaxHighlighter>
                     <br />
+                    <SyntaxHighlighter showLineNumbers lineNumberStyle={{ color: "#7e7e7e" }} customStyle={{ borderRadius: "13px", width: "100%", height: "100%" }} language="html" style={nightOwl}>
+                      {customHtmlIntegrationCode}
+                    </SyntaxHighlighter>
+                    <br />
                   </div>
                 </div>
                 <div>
                   <h2 className="text-2xl font-bold mb-4">Sites</h2>
-
                   <SiteComponent onSiteChange={setSelectedSite} selectedSite={selectedSite}></SiteComponent>
                 </div>
               </div>

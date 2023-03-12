@@ -9,6 +9,8 @@ export const SiteContext = React.createContext<SiteContextType>(null!);
 function SiteProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const { user } = useAuth();
   const [sites, setSites] = useState<Site[] | undefined>([]);
+  if (user?.sites[0] === null) user.sites = [];
+
   const { getCurrentUser } = UserService();
   const siteService = SiteService();
 

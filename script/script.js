@@ -1,20 +1,12 @@
 const API_URL = 'http://localhost:5000/api'
 const mainEl = document.querySelector('#dadasha')
 
-// il reste a ajouter les event custom
-
-// const sendCustomMessage = (option) => {
-//   return {
-//     ...option,
-//   };
-// };
-
 const clientTimestamp = Date.now()
 let eventsQueue = []
 let eventMetadata = {}
 
-const clientIdDataAttribute = mainEl.getAttribute('data-clientId')
-const siteIdDataAttribute = mainEl.getAttribute('data-siteId')
+const clientIdDataAttribute = mainEl.dataset.clientId
+const siteIdDataAttribute = mainEl.dataset.siteId
 
 function generateSelector (context) {
   let pathSelector
@@ -74,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // selector output
     const output = generateSelector(e.target)
 
-    // element that you select
     const element = document.querySelector(output)
 
     const elementPayload = {
@@ -99,37 +90,48 @@ document.addEventListener('DOMContentLoaded', () => {
   resizeObserver.observe(document.querySelector('html'))
 })
 
-const sendEventBatch = ({ clientId, siteId }) => {
+const sendEventBatch = () => {
   const eventsToSend = [...eventsQueue]
   eventsQueue = []
-  eventMetadata = { clientId, siteId, clientTimestamp }
   console.log({ events: eventsToSend, ...eventMetadata });
   (async () => {
     if (eventsToSend.length === 0) {
       console.log('vide')
       return
     }
-    const response = await fetch(`${API_URL}/event`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({ events: eventsToSend, ...eventMetadata }),
-      parameters: {
-        siteId, clientId
-      }
-    })
-
-    const content = await response.text()
-    console.log(content)
+    const response = await sendEventToApi(eventsToSend)
+    console.log(response)
   })()
 }
 
-export const InitDadasha = (option) => {
-  setInterval(() => sendEventBatch(option), 5000)
+const InitDadasha = (option) => {
+  eventMetadata = { clientId: option.clientId, siteId: option.siteId, clientTimestamp }
+  setInterval(() => sendEventBatch(), 5000)
 }
 
-if (clientIdDataAttribute && siteIdDataAttribute) {
-  InitDadasha({ siteIdDataAttribute, clientIdDataAttribute })
+const sendEventToApi = async (eventsToSend) => {
+  const res = await fetch(`${API_URL}/event`, {
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json'
+    },
+    method: 'POST',
+    body: JSON.stringify({ events: eventsToSend, ...eventMetadata }),
+    parameters: {
+      siteId: eventMetadata.siteId, clientId: eventMetadata.clientId
+    }
+  })
+  return await res.text()
 }
+
+const sendCustomMessage = (option) => {
+  return eventsQueue.push({ type: 'custom', label: option.label })
+}
+
+console.log(clientIdDataAttribute && siteIdDataAttribute)
+
+if (clientIdDataAttribute && siteIdDataAttribute) {
+  InitDadasha({ siteId: siteIdDataAttribute, clientId: clientIdDataAttribute })
+}
+
+export { InitDadasha as default, sendCustomMessage }

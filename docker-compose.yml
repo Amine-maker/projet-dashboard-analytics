@@ -11,14 +11,15 @@ services:
     image: mongo:latest
     container_name: "mongodb"
     ports:
-      - 27070:27017
+      - 27017:27017
     volumes:
       - ./dashboard-api/init_data/mongodb_data.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
   frontend:
     build: ./dashboard
     container_name: "frontend-container"
+    command: npm run dev
     ports:
       - 5173:5173
     volumes:
        - ./dashboard:/usr/src/app/dashboard
-       - /usr/src/app/my-app/node_modules
+       - /usr/src/app/dashboard/node_modules

@@ -15,8 +15,6 @@ interface PropSite {
 
 export const SiteComponent = (props: PropSite): JSX.Element => {
   const { sites, deleteSite } = useSite();
-  console.log(sites);
-
   const [isOpenDialogForm, setOpenDialogForm] = useState<boolean>(false);
 
   const handleOpen = (): void => {

@@ -17,3 +17,7 @@ export const parseUserAgents = (userAgents: string[]): UserAgentData[] => {
     };
   });
 };
+
+export const copyToClipboard = async (text: string): Promise<void> => {
+  await navigator.clipboard.writeText(text);
+};

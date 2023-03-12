@@ -9,9 +9,6 @@ interface BasicMetricProps {
 interface BasicMetricData {
   displayData: number | string;
   title: string;
-  width?: number;
-  height?: number;
-  // ajouter du custom css
 }
 
 const DisplayData = styled.div`

@@ -78,4 +78,4 @@ export interface UserAgentData {
   os?: string;
 }
 
-export type EventType = "resize" | "click";
+export type EventType = "resize" | "click" | "custom";
