@@ -62,7 +62,7 @@ import InitDadasha from "/chemin/vers/script.js";
 import InitDadasha, { sendCustomEvent } from "/chemin/vers/script.js";
 
 monElement.addEventListener('click' /* peu importe l'evenement */, (e) => {
-    sendCustomEvent(
+    sendCustomMessage(
     {
       label : "mon evenement",
       data : {
